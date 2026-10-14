@@ -50,10 +50,10 @@ const StudentApp = {
                             <td>${Utils.getStatusBadge(w.status)}</td>
                             <td>${Utils.getRiskBadge(w.riskLevel || 'HIGH')}</td>
                             <td class="text-end">
-                                <a href="/student/practice.html?topicId=${w.topicId}" class="btn btn-sm btn-outline-primary me-1">
+                                <a href="${Auth.getBasePath()}/student/practice.html?topicId=${w.topicId}" class="btn btn-sm btn-outline-primary me-1">
                                     <i class="bi bi-pencil-square me-1"></i>Practice
                                 </a>
-                                <a href="/student/materials.html?topicId=${w.topicId}" class="btn btn-sm btn-outline-secondary">
+                                <a href="${Auth.getBasePath()}/student/materials.html?topicId=${w.topicId}" class="btn btn-sm btn-outline-secondary">
                                     <i class="bi bi-journal-text me-1"></i>Notes
                                 </a>
                             </td>

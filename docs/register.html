@@ -125,7 +125,7 @@
                 successBox.textContent = 'Account created successfully! Redirecting to login...';
                 successBox.classList.remove('d-none');
                 setTimeout(() => {
-                    window.location.href = '/login.html';
+                    window.location.href = `${Auth.getBasePath()}/login.html`;
                 }, 1500);
             } catch (err) {
                 alertBox.textContent = err.message || 'Registration failed.';
