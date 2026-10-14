@@ -1,0 +1,43 @@
+# ===================================================================
+# Render Blueprint (render.yaml)
+# Defines the backend web service and PostgreSQL database.
+# Push this file to the repo root, then connect the repo to Render.
+# ===================================================================
+
+services:
+  - type: web
+    name: learnpredict-backend
+    runtime: docker
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    repo: https://github.com/lingamajay/student-management-system
+    branch: main
+    plan: free
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: DATABASE_URL
+        fromDatabase:
+          name: learnpredict-db
+          property: connectionURI
+      - key: DATABASE_USERNAME
+        fromDatabase:
+          name: learnpredict-db
+          property: user
+      - key: DATABASE_PASSWORD
+        fromDatabase:
+          name: learnpredict-db
+          property: password
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://your-frontend.vercel.app
+      - key: JAVA_TOOL_OPTIONS
+        value: -XX:MaxRAMPercentage=75.0
+
+databases:
+  - name: learnpredict-db
+    plan: free
+    databaseName: personalized_learning_db
+    user: learnpredict_user

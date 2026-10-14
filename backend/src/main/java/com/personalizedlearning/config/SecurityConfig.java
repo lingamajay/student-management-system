@@ -30,6 +30,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/**").permitAll() // REST endpoints authenticated via app tokens/roles or open for local evaluation
+                .requestMatchers("/actuator/health", "/actuator/info").permitAll()
                 .requestMatchers("/", "/index.html", "/login.html", "/register.html", "/about.html").permitAll()
                 .requestMatchers("/css/**", "/js/**", "/images/**", "/student/**", "/teacher/**", "/admin/**", "/uploads/**").permitAll()
                 .anyRequest().permitAll()

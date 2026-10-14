@@ -1,0 +1,13 @@
+target/
+data/
+uploads/
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+.git/
+.github/
+*.md
+.DS_Store
+Thumbs.db

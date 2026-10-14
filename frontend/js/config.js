@@ -3,9 +3,28 @@
 // ===================================================================
 
 const CONFIG = {
-    // If running separately via Live Server or port 5500/3000, points to 8080.
-    // If served directly from Spring Boot, uses relative path.
-    API_BASE_URL: (window.location.port === '8080') ? '/api' : 'http://localhost:8080/api',
+    // In production (Vercel), API calls are proxied via vercel.json rewrites.
+    // In local development:
+    //   - If served by Spring Boot (port 8080), uses relative /api path.
+    //   - If served separately (port 3000/5500), points to localhost:8080.
+    API_BASE_URL: (() => {
+        const port = window.location.port;
+        const hostname = window.location.hostname;
+
+        // Production (Vercel or any non-localhost deployment)
+        if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
+            return '/api';
+        }
+
+        // Local: served by Spring Boot directly
+        if (port === '8080') {
+            return '/api';
+        }
+
+        // Local: served by separate dev server (Node.js/Live Server)
+        return 'http://localhost:8080/api';
+    })(),
+
     WEAK_THRESHOLD: 60.0,
     STRONG_THRESHOLD: 75.0
 };
