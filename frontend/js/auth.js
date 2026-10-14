@@ -3,6 +3,10 @@
 // ===================================================================
 
 const Auth = {
+    getBasePath() {
+        return window.location.pathname.includes('/student-management-system') ? '/student-management-system' : '';
+    },
+
     getUser() {
         const u = localStorage.getItem('user_session');
         return u ? JSON.parse(u) : null;
@@ -37,23 +41,19 @@ const Auth = {
     logout() {
         localStorage.removeItem('user_session');
         localStorage.removeItem('auth_token');
-        window.location.href = '/login.html';
+        window.location.href = `${this.getBasePath()}/login.html`;
     },
 
     requireRole(expectedRole) {
         const user = this.getUser();
         if (!user) {
-            // Determine relative path to login.html
-            const isSubfolder = window.location.pathname.includes('/student/') || 
-                                window.location.pathname.includes('/teacher/') || 
-                                window.location.pathname.includes('/admin/');
-            window.location.href = isSubfolder ? '../login.html' : 'login.html';
+            window.location.href = `${this.getBasePath()}/login.html`;
             return false;
         }
 
         if (expectedRole && user.role.toUpperCase() !== expectedRole.toUpperCase() && user.role.toUpperCase() !== 'ADMIN') {
             alert(`Unauthorized! This section requires ${expectedRole} privileges.`);
-            window.location.href = user.role === 'TEACHER' ? '/teacher/dashboard.html' : '/student/dashboard.html';
+            window.location.href = user.role === 'TEACHER' ? `${this.getBasePath()}/teacher/dashboard.html` : `${this.getBasePath()}/student/dashboard.html`;
             return false;
         }
         return true;
@@ -64,10 +64,12 @@ const Auth = {
         const navContainer = document.getElementById('navbar-auth-controls');
         if (!navContainer) return;
 
+        const base = this.getBasePath();
+
         if (user) {
-            let dashboardUrl = '/student/dashboard.html';
-            if (user.role === 'TEACHER') dashboardUrl = '/teacher/dashboard.html';
-            if (user.role === 'ADMIN') dashboardUrl = '/admin/dashboard.html';
+            let dashboardUrl = `${base}/student/dashboard.html`;
+            if (user.role === 'TEACHER') dashboardUrl = `${base}/teacher/dashboard.html`;
+            if (user.role === 'ADMIN') dashboardUrl = `${base}/admin/dashboard.html`;
 
             navContainer.innerHTML = `
                 <div class="d-flex align-items-center gap-3">
@@ -84,8 +86,8 @@ const Auth = {
         } else {
             navContainer.innerHTML = `
                 <div class="d-flex gap-2">
-                    <a href="/login.html" class="btn btn-outline-primary btn-sm">Sign In</a>
-                    <a href="/register.html" class="btn btn-primary btn-sm">Sign Up Free</a>
+                    <a href="${base}/login.html" class="btn btn-outline-primary btn-sm">Sign In</a>
+                    <a href="${base}/register.html" class="btn btn-primary btn-sm">Sign Up Free</a>
                 </div>
             `;
         }

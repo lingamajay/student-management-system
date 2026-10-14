@@ -78,6 +78,21 @@
                         </div>
                     </div>
 
+                    <!-- Offline Demo Preview Option -->
+                    <div class="mt-3 text-center">
+                        <button type="button" class="btn btn-link btn-sm text-muted text-decoration-none" onclick="enterOfflineDemo()">
+                            <i class="bi bi-play-circle me-1"></i>Explore in Offline Demo Mode (No backend required)
+                        </button>
+                    </div>
+
+                    <!-- Backend API Setting -->
+                    <div class="mt-2 text-center border-top pt-2">
+                        <span class="text-muted" style="font-size: 0.75rem;">
+                            API Target: <code id="current-api-url" class="text-primary"></code>
+                            <a href="#" class="ms-1 text-decoration-none" onclick="changeApiUrl(); return false;">(Change)</a>
+                        </span>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -88,9 +103,38 @@
     <script src="/js/api.js"></script>
     <script src="/js/auth.js"></script>
     <script>
+        function updateApiDisplay() {
+            const el = document.getElementById('current-api-url');
+            if (el) {
+                el.textContent = CONFIG.API_BASE_URL;
+            }
+        }
+        updateApiDisplay();
+
+        function changeApiUrl() {
+            const current = localStorage.getItem('api_base_url') || CONFIG.API_BASE_URL;
+            const newUrl = prompt('Enter your Spring Boot Backend API URL (e.g., https://your-backend.onrender.com/api or http://localhost:8080/api):', current);
+            if (newUrl !== null && newUrl.trim() !== '') {
+                localStorage.setItem('api_base_url', newUrl.trim().replace(/\/$/, ''));
+                alert('Backend URL updated! The page will now reload.');
+                window.location.reload();
+            }
+        }
+
         function fillDemo(email, pass) {
             document.getElementById('email').value = email;
             document.getElementById('password').value = pass;
+        }
+
+        function enterOfflineDemo() {
+            const demoUser = {
+                id: 3,
+                name: "Rahul Verma (Demo)",
+                email: "student@learning.com",
+                role: "STUDENT"
+            };
+            Auth.setUser(demoUser, "offline-demo-token");
+            window.location.href = `${Auth.getBasePath()}/student/dashboard.html`;
         }
 
         document.getElementById('login-form').addEventListener('submit', async (e) => {
@@ -106,15 +150,22 @@
 
             try {
                 const res = await Auth.login(email, password);
+                const base = Auth.getBasePath();
                 if (res.role === 'TEACHER') {
-                    window.location.href = '/teacher/dashboard.html';
+                    window.location.href = `${base}/teacher/dashboard.html`;
                 } else if (res.role === 'ADMIN') {
-                    window.location.href = '/admin/dashboard.html';
+                    window.location.href = `${base}/admin/dashboard.html`;
                 } else {
-                    window.location.href = '/student/dashboard.html';
+                    window.location.href = `${base}/student/dashboard.html`;
                 }
             } catch (err) {
-                alertBox.textContent = err.message || 'Login failed. Please check credentials.';
+                let msg = err.message || 'Login failed. Please check credentials.';
+                if (msg.includes('unreachable') || msg.includes('Failed to fetch')) {
+                    msg = `<strong>Backend server is unreachable!</strong><br><small class="text-dark">The Java Spring Boot API is not running at <code>${CONFIG.API_BASE_URL}</code>. Deploy it on Render, run it locally, or use the <strong>Explore in Offline Demo Mode</strong> button below to preview the UI.</small>`;
+                    alertBox.innerHTML = msg;
+                } else {
+                    alertBox.textContent = msg;
+                }
                 alertBox.classList.remove('d-none');
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<i class="bi bi-box-arrow-in-right me-1"></i> Sign In';

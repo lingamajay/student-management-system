@@ -36,6 +36,9 @@ const API = {
             return data;
         } catch (error) {
             console.error(`API Error on [${options.method || 'GET'} ${endpoint}]:`, error);
+            if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
+                throw new Error(`Backend server unreachable at ${CONFIG.API_BASE_URL}. Deploy the backend on Render or start it locally.`);
+            }
             throw error;
         }
     },
