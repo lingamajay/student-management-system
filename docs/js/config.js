@@ -3,9 +3,39 @@
 // ===================================================================
 
 const CONFIG = {
-    // If running separately via Live Server or port 5500/3000, points to 8080.
-    // If served directly from Spring Boot, uses relative path.
-    API_BASE_URL: (window.location.port === '8080') ? '/api' : 'http://localhost:8080/api',
+    // Dynamic API URL detection:
+    // 1. Can be manually overridden via: localStorage.setItem('api_base_url', 'https://your-backend.com/api')
+    // 2. When hosted on GitHub Pages (*.github.io), points to Render backend
+    // 3. When hosted on Vercel (*.vercel.app), uses relative /api (proxied via vercel.json)
+    // 4. When local on port 8080 (served by Spring Boot), uses /api
+    // 5. When local on other ports (Live Server / Node.js), points to http://localhost:8080/api
+    API_BASE_URL: (() => {
+        if (localStorage.getItem('api_base_url')) {
+            return localStorage.getItem('api_base_url');
+        }
+
+        const port = window.location.port;
+        const hostname = window.location.hostname;
+
+        // GitHub Pages deployment
+        if (hostname.endsWith('github.io')) {
+            return 'https://learnpredict-backend.onrender.com/api';
+        }
+
+        // Vercel deployment (uses vercel.json proxy)
+        if (hostname.endsWith('vercel.app')) {
+            return '/api';
+        }
+
+        // Local: served by Spring Boot directly
+        if (port === '8080') {
+            return '/api';
+        }
+
+        // Local: served by separate dev server (Node.js/Live Server)
+        return 'http://localhost:8080/api';
+    })(),
+
     WEAK_THRESHOLD: 60.0,
     STRONG_THRESHOLD: 75.0
 };

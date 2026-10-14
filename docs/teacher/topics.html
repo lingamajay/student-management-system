@@ -6,15 +6,15 @@
     <title>Manage Topics - Teacher Portal</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="/personalized-learning-management-system/css/style.css">
-    <link rel="stylesheet" href="/personalized-learning-management-system/css/dashboard.css">
+    <link rel="stylesheet" href="/student-management-system/css/style.css">
+    <link rel="stylesheet" href="/student-management-system/css/dashboard.css">
 </head>
 <body>
 
     <!-- Header Navbar -->
     <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
         <div class="container-fluid px-4">
-            <a class="navbar-brand" href="/personalized-learning-management-system/teacher/dashboard.html">
+            <a class="navbar-brand" href="/student-management-system/teacher/dashboard.html">
                 <i class="bi bi-mortarboard-fill fs-3 text-primary"></i>
                 <span class="brand-font fs-4">LearnPredict</span>
             </a>
@@ -30,28 +30,28 @@
         <aside class="sidebar">
             <div class="sidebar-heading">Analytics & Reports</div>
             <ul class="sidebar-nav">
-                <li><a href="/personalized-learning-management-system/teacher/dashboard.html" class="sidebar-link"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-                <li><a href="/personalized-learning-management-system/teacher/performance.html" class="sidebar-link"><i class="bi bi-bar-chart-line"></i> Student Performance</a></li>
-                <li><a href="/personalized-learning-management-system/teacher/reports.html" class="sidebar-link"><i class="bi bi-file-earmark-bar-graph"></i> Weak-Topic Reports</a></li>
+                <li><a href="/student-management-system/teacher/dashboard.html" class="sidebar-link"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+                <li><a href="/student-management-system/teacher/performance.html" class="sidebar-link"><i class="bi bi-bar-chart-line"></i> Student Performance</a></li>
+                <li><a href="/student-management-system/teacher/reports.html" class="sidebar-link"><i class="bi bi-file-earmark-bar-graph"></i> Weak-Topic Reports</a></li>
             </ul>
 
             <div class="sidebar-heading">Curriculum Management</div>
             <ul class="sidebar-nav">
-                <li><a href="/personalized-learning-management-system/teacher/subjects.html" class="sidebar-link"><i class="bi bi-book"></i> Subjects</a></li>
-                <li><a href="/personalized-learning-management-system/teacher/topics.html" class="sidebar-link active"><i class="bi bi-diagram-3"></i> Topics</a></li>
-                <li><a href="/personalized-learning-management-system/teacher/materials.html" class="sidebar-link"><i class="bi bi-journal-text"></i> Study Materials</a></li>
+                <li><a href="/student-management-system/teacher/subjects.html" class="sidebar-link"><i class="bi bi-book"></i> Subjects</a></li>
+                <li><a href="/student-management-system/teacher/topics.html" class="sidebar-link active"><i class="bi bi-diagram-3"></i> Topics</a></li>
+                <li><a href="/student-management-system/teacher/materials.html" class="sidebar-link"><i class="bi bi-journal-text"></i> Study Materials</a></li>
             </ul>
 
             <div class="sidebar-heading">Assessment Center</div>
             <ul class="sidebar-nav">
-                <li><a href="/personalized-learning-management-system/teacher/questions.html" class="sidebar-link"><i class="bi bi-question-circle"></i> Question Bank</a></li>
-                <li><a href="/personalized-learning-management-system/teacher/manage-quizzes.html" class="sidebar-link"><i class="bi bi-ui-checks"></i> Manage Quizzes</a></li>
-                <li><a href="/personalized-learning-management-system/teacher/create-quiz.html" class="sidebar-link"><i class="bi bi-plus-circle"></i> Create Quiz</a></li>
+                <li><a href="/student-management-system/teacher/questions.html" class="sidebar-link"><i class="bi bi-question-circle"></i> Question Bank</a></li>
+                <li><a href="/student-management-system/teacher/manage-quizzes.html" class="sidebar-link"><i class="bi bi-ui-checks"></i> Manage Quizzes</a></li>
+                <li><a href="/student-management-system/teacher/create-quiz.html" class="sidebar-link"><i class="bi bi-plus-circle"></i> Create Quiz</a></li>
             </ul>
 
             <div class="sidebar-heading">Students</div>
             <ul class="sidebar-nav">
-                <li><a href="/personalized-learning-management-system/teacher/students.html" class="sidebar-link"><i class="bi bi-people"></i> Enrolled Students</a></li>
+                <li><a href="/student-management-system/teacher/students.html" class="sidebar-link"><i class="bi bi-people"></i> Enrolled Students</a></li>
             </ul>
         </aside>
 
@@ -149,10 +149,10 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/personalized-learning-management-system/js/config.js"></script>
-    <script src="/personalized-learning-management-system/js/api.js"></script>
-    <script src="/personalized-learning-management-system/js/auth.js"></script>
-    <script src="/personalized-learning-management-system/js/teacher.js"></script>
+    <script src="/student-management-system/js/config.js"></script>
+    <script src="/student-management-system/js/api.js"></script>
+    <script src="/student-management-system/js/auth.js"></script>
+    <script src="/student-management-system/js/teacher.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', async () => {
             if (!Auth.requireRole('TEACHER')) return;
@@ -199,7 +199,7 @@
                             <td>${Utils.getDifficultyBadge(t.difficulty)}</td>
                             <td class="text-muted small">${t.description || 'N/A'}</td>
                             <td class="text-end">
-                                <a href="/personalized-learning-management-system/teacher/questions.html?topicId=${t.id}" class="btn btn-sm btn-outline-info me-1" title="View Questions">
+                                <a href="/student-management-system/teacher/questions.html?topicId=${t.id}" class="btn btn-sm btn-outline-info me-1" title="View Questions">
                                     <i class="bi bi-question-circle"></i>
                                 </a>
                                 <button class="btn btn-sm btn-outline-danger" onclick="deleteTopicItem(${t.id})">
